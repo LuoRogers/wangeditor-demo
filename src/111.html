@@ -1,0 +1,50 @@
+<p>&nbsp;</p>
+<p>表格</p>
+<figure class="table">
+  <table>
+    <thead>
+      <tr>
+        <th>表头行</th>
+        <th>&nbsp;</th>
+        <th>&nbsp;</th>
+        <th>&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="2">好好号</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>11</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td rowspan="2">
+          <h1>111</h1>
+        </td>
+      </tr>
+      <tr>
+        <td>22</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<p>代码快</p>
+<pre><code class="language-JavaScript">const isDialogEditAble = computed(() =&gt; {
+  const {
+    model: { status },
+  } = dialog.value;
+  return (
+    isEdit.value &amp;&amp;
+    [
+      MODEL_STATUS.PENDING,
+      MODEL_STATUS.DOWNLOADING,
+      MODEL_STATUS.SUCCEEDED,
+    ].includes(status)
+  );
+});
+</code></pre>
+<p>&nbsp;</p>
