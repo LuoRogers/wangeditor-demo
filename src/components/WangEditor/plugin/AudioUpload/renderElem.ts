@@ -35,11 +35,6 @@ function renderAudioElement(elemNode:SlateElement, children: VNode[] | null, edi
     )
     const vnode = h(
         'div',
-        {
-            props: {
-                "className": 'w-e-textarea-video-container', // 这里直接复用video的效果
-            },
-        },
         audioVnode
     )
     const containerVnode = h(

@@ -15,12 +15,34 @@ import { renderAudioConf } from './plugin/AudioUpload/renderElem'
 import { audioToHtmlConf } from './plugin/AudioUpload/elemHtml'
 import withAudio from './plugin/AudioUpload/plugin'
 import registerMenu from '.'
+
 const parser = new DOMParser()
 const editorRef = shallowRef()
 const valueHtml = ref('')
 const props = defineProps<{
     modelValue: string
 }>()
+
+const toolbarConfig = {
+
+}
+const editorConfig = {
+    placeholder: '请输入内容...',
+    MENU_CONF: {
+        //   uploadImage: {
+        //     async customUpload(file: File, insertFn: any) {
+        //       const formData = new FormData()
+        //       formData.append('file', file)
+        //       const url = await uploadApi.upload(formData)
+        //       insertFn(url, '', '')
+        //     }
+        //   }
+    }
+}
+
+Boot.registerRenderElem(renderAudioConf)
+Boot.registerElemToHtml(audioToHtmlConf)
+Boot.registerPlugin(withAudio);
 
 const emits = defineEmits<{
     (e: 'update:modelValue', v: string): void
@@ -82,25 +104,6 @@ watch(valueHtml, (v: string) => {
 })
 
 
-
-
-const toolbarConfig = {
-
-}
-const editorConfig = {
-    placeholder: '请输入内容...',
-    MENU_CONF: {
-        //   uploadImage: {
-        //     async customUpload(file: File, insertFn: any) {
-        //       const formData = new FormData()
-        //       formData.append('file', file)
-        //       const url = await uploadApi.upload(formData)
-        //       insertFn(url, '', '')
-        //     }
-        //   }
-    }
-}
-
 // 组件销毁时，也及时销毁编辑器
 onBeforeUnmount(() => {
     const editor = editorRef.value
@@ -111,9 +114,6 @@ onBeforeUnmount(() => {
 const handleCreated = (editor: any) => {
     editorRef.value = editor // 记录 editor 实例，重要！
     registerMenu(editorRef.value, toolbarConfig)
-    Boot.registerRenderElem(renderAudioConf)
-    Boot.registerElemToHtml(audioToHtmlConf)
-    Boot.registerPlugin(withAudio);
     console.log('editor created', editor)
 }
 
