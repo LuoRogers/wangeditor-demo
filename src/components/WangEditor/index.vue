@@ -10,11 +10,9 @@ import '@wangeditor/editor/dist/css/style.css' // 引入 css
 import { onBeforeUnmount, onMounted, ref, shallowRef, watch } from 'vue'
 // @ts-ignore
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
-import { Boot } from '@wangeditor/editor'
-import { renderAudioConf } from './plugin/AudioUpload/renderElem'
-import { audioToHtmlConf } from './plugin/AudioUpload/elemHtml'
-import withAudio from './plugin/AudioUpload/plugin'
-import registerMenu from '.'
+import { Boot, type IEditorConfig, type IToolbarConfig } from '@wangeditor/editor'
+import attachmentModule from '@wangeditor/plugin-upload-attachment'
+import audioModule from './plugin/AudioUpload'
 
 const parser = new DOMParser()
 const editorRef = shallowRef()
@@ -23,10 +21,13 @@ const props = defineProps<{
     modelValue: string
 }>()
 
-const toolbarConfig = {
-
+const toolbarConfig: Partial<IToolbarConfig> = {
+    insertKeys: {
+        index: 23,
+        keys: ['uploadAttachment', 'uploadAudio']
+    }
 }
-const editorConfig = {
+const editorConfig: Partial<IEditorConfig> = {
     placeholder: '请输入内容...',
     MENU_CONF: {
         //   uploadImage: {
@@ -37,12 +38,31 @@ const editorConfig = {
         //       insertFn(url, '', '')
         //     }
         //   }
+        uploadAttachment: {
+            async customUpload(file: File, insertFn: any) {
+                return new Promise(resolve => {
+                    // 需要改成自己的上传逻辑
+                    setTimeout(() => {
+                        const src = `https://www.w3school.com.cn/i/movie.ogg`
+                        insertFn(`customUpload-${file.name}`, src)
+                        resolve('ok')
+                    }, 500)
+                })
+            }
+        }
+    },
+    hoverbarKeys: {
+        attachment: {
+            menuKeys: ['downloadAttachment']
+        }
     }
+
 }
 
-Boot.registerRenderElem(renderAudioConf)
-Boot.registerElemToHtml(audioToHtmlConf)
-Boot.registerPlugin(withAudio);
+
+Boot.registerModule(attachmentModule)
+Boot.registerModule(audioModule)
+
 
 const emits = defineEmits<{
     (e: 'update:modelValue', v: string): void
@@ -100,6 +120,7 @@ watch(valueHtml, (v: string) => {
     if (!editorRef.value.isEmpty()) {
         res = v
     }
+    console.log('valueHtml', v)
     emits('update:modelValue', res)
 })
 
@@ -113,7 +134,7 @@ onBeforeUnmount(() => {
 
 const handleCreated = (editor: any) => {
     editorRef.value = editor // 记录 editor 实例，重要！
-    registerMenu(editorRef.value, toolbarConfig)
+    // registerMenu(editorRef.value, toolbarConfig)
     console.log('editor created', editor)
 }
 

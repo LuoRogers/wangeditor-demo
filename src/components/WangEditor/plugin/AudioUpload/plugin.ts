@@ -5,7 +5,7 @@ function withAudio<T extends IDomEditor>(editor: T) {
   const newEditor = editor
 
   // 重写 isInline
-  newEditor.isInline = elem => {
+  newEditor.isInline = (elem) => {
     const type = DomEditor.getNodeType(elem)
     if (type === 'audio') {
       return true
@@ -15,7 +15,7 @@ function withAudio<T extends IDomEditor>(editor: T) {
   }
 
   // 重写 isVoid
-  newEditor.isVoid = elem => {
+  newEditor.isVoid = (elem) => {
     const type = DomEditor.getNodeType(elem)
     if (type === 'audio') {
       return true
